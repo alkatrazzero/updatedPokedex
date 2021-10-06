@@ -4,7 +4,7 @@ import {Button} from "antd";
 import {UpdateProfileForm} from "./updateProfileForm";
 import avatar from "../../../assets/img/nullAvatar.png"
 import {getRandomArrayElements} from "../../../assets/rundomValueFavoritePokemonsArr";
-import {getAllFavoritePokemons, setFavoritePokemonsFeed} from "../../../store/pokemonsReduser";
+import { setFavoritePokemonsFeed} from "../../../store/pokemonsReduser";
 import {uniqFavoritePokemonsFeed} from "../../../store/pokemonsSelector";
 
 export const ProfileInfo = () => {

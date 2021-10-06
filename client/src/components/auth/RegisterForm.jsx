@@ -7,11 +7,11 @@ import {authAPI} from "../../api/api";
 export const RegisterForm = () => {
   // const apiCall=
   const onFinish = async ({email, password}) => {
-    const response= await authAPI.register({email, password})
-    if (response == "пользователь создан") {
+    const response = await authAPI.register({email, password})
+    if (response === "пользователь создан") {
       message.success("пользователь создан");
       onClose()
-    } else{
+    } else {
       return message.error(response.data.message);
     }
   };
@@ -23,7 +23,7 @@ export const RegisterForm = () => {
     setVisible(false)
   };
 
-  return <div>
+  return <div className={"register_form"}>
     <Button type="primary" onClick={showDrawer}>
       <PlusOutlined/> New account
     </Button>
@@ -54,7 +54,7 @@ export const RegisterForm = () => {
         <Form.Item
           label="email"
           name="email"
-          rules={[{required: true, message: 'Введите email', type:"email"}]}
+          rules={[{required: true, message: 'Введите email', type: "email"}]}
         >
           <Input/>
         </Form.Item>
@@ -62,13 +62,13 @@ export const RegisterForm = () => {
         <Form.Item
           label="password"
           name="password"
-          rules={[{required: true, message: 'Минимальная длина пароля 6 символов',min:6}]}
+          rules={[{required: true, message: 'Минимальная длина пароля 6 символов', min: 6}]}
         >
           <Input.Password/>
 
         </Form.Item>
         <Space>
-          <Button  type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit">
             Register
           </Button>
         </Space>

@@ -83,4 +83,4 @@ const Body = (props) => {
     </div>
   </div>
 }
-export default Body;
+export default React.memo(Body);

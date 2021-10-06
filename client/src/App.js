@@ -24,4 +24,4 @@ const App = (props) => {
   </div>
 }
 
-export default App;
+export default React.memo(App);

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Form, Input, InputNumber, Button} from 'antd';
 import "../profile.css"
 import {profileInfoAPI} from "../../../api/api";

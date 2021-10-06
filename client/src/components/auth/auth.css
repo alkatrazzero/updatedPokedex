@@ -1,0 +1,11 @@
+.login {
+    display: flex;
+    justify-content: center;
+    padding-top: 180px;
+}
+
+.login_form {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px
+}

@@ -3,8 +3,7 @@ import {Button, Form, Input, message, Space} from "antd";
 import {authAPI} from "../../api/api";
 import {setUserData, setUserToken} from "../../store/authReduser";
 import {useDispatch} from "react-redux";
-import {GoogleLogin} from "./GoogleLogin";
-
+import "./auth.css"
 export const LoginForm = () => {
   const dispatch = useDispatch()
   const onFinish = async ({email, password}) => {
@@ -21,9 +20,9 @@ export const LoginForm = () => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  return <div className={"div"}>
-    <div style={{display: "flex", justifyContent: 'center', paddingTop: 180}}>login</div>
-    <div style={{display: "flex", justifyContent: 'center', marginTop: 50}}>
+  return <div className={"login_container"}>
+    <div className={"login"}>login</div>
+    <div className={"login_form"}>
 
       <Form
         name="basic"
@@ -53,8 +52,6 @@ export const LoginForm = () => {
           <Button type="primary" htmlType="submit">
             login
           </Button>
-          <GoogleLogin/>
-
         </Space>
       </Form>
 
