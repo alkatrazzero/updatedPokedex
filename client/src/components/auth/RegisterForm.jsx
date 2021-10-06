@@ -5,21 +5,15 @@ import {authAPI} from "../../api/api";
 
 
 export const RegisterForm = () => {
-
+  // const apiCall=
   const onFinish = async ({email, password}) => {
-    const response= await authAPI.register({email, password}).then((response) => {
-      return response.data.message
-    })
-    console.log(response)
+    const response= await authAPI.register({email, password})
     if (response == "пользователь создан") {
-      message.success();
+      message.success("пользователь создан");
       onClose()
-    } else return message.error();
-
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    } else{
+      return message.error(response.data.message);
+    }
   };
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
@@ -54,7 +48,8 @@ export const RegisterForm = () => {
         wrapperCol={{span: 16}}
         initialValues={{remember: true}}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+
+
       >
         <Form.Item
           label="email"
@@ -73,7 +68,7 @@ export const RegisterForm = () => {
 
         </Form.Item>
         <Space>
-          <Button type="primary" htmlType="submit">
+          <Button  type="primary" htmlType="submit">
             Register
           </Button>
         </Space>

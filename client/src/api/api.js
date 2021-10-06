@@ -27,13 +27,16 @@ export const profileInfoAPI = {
 //api calls for autorization
 export const authAPI = {
   register(authData) {
-    return axios.post('/api/auth/register', authData).then((response) => {
+    return axios.post('/api/auth/register', authData).then(response => {
       return response
+    }).catch(function (error) {
+      return error.response;
     });
   },
   login(authData) {
-
-    return axios.post('/api/auth/login', authData)
+    return axios.post('/api/auth/login', authData).catch(function (error) {
+      return error.response;
+    });
 
   }
 }
@@ -41,21 +44,21 @@ export const authAPI = {
 
 export const favoritePokemonsAPI = {
   getFavoritePokemons(token) {
-    return axios.get(`api/favoritePokemons/get`, {
+    return axios.get(`api/pokemons/get`, {
       headers: {
         Authorization: 'Bearer ' + token
       }
     })
   },
   setFavoritePokemon(pokemon, token) {
-    return axios.post(`api/favoritePokemons/add`, {pokemon,}, {
+    return axios.post(`api/pokemons/add`, {pokemon,}, {
       headers: {
         Authorization: 'Bearer ' + token
       }
     })
   },
   removeFavoritePokemon(id) {
-    return axios.post(`api/favoritePokemons/remove/${id}`, {})
+    return axios.post(`api/pokemons/remove/${id}`, {})
   },
 
 }

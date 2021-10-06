@@ -17,18 +17,17 @@ router.post('/register',
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
-        return res.status(200).json({errors: errors.array(), message: 'Некорректные данные при регистрации'})
+        return res.status(400).json({errors: errors.array(), message: 'Некорректные данные при регистрации'})
       }
       const {email, password} = req.body
       const candidate = await User.findOne({email})
       if (candidate) {
-        return res.status(400), res.json({message: "такой пользователь уже существует"})
+        return res.status(401).send({message: "такой пользователь уже существует"})
       }
       const hashedPassword = await bcrypt.hash(password, 12)
       const user = new User({email, password: hashedPassword})
       await user.save()
       res.json({message: "пользователь создан"})
-
     } catch (e) {
       res.status(500).json({message: "что то пошло не так ,попробуйте снова"})
     }
@@ -44,18 +43,18 @@ router.post('/login',
 
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
-        return res.status(200).json({errors: errors.array(), message: 'Некорректные данные при входе в систему'})
+        return res.status(400).json({errors: errors.array(), message: 'Некорректные данные при входе в систему'})
       }
       const {email, password} = req.body
       const user = await User.findOne({email})
 
       if (!user) {
-        return res.status(200).json({message: 'пользователь не найден'})
+        return res.status(401).json({message: 'пользователь не найден'})
       }
       const isMatch = await bcrypt.compare(password, user.password)
 
       if (!isMatch) {
-        return res.status(200).json({message: 'Неверный пароль, попробуйте снова'})
+        return res.status(401).json({message: 'Неверный пароль, попробуйте снова'})
       }
       const token = jwt.sign(
         {user_id: user._id},

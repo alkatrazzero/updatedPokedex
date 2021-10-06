@@ -6,10 +6,7 @@ import { Col, Dropdown, Layout, Menu, Row} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import AuthPage from "./components/auth/AuthPage";
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "./store/authReduser";
-import {setAllFavoritePokemons} from "./store/pokemonsReduser";
 import Profile from "./components/profile/profile";
-import {setUserProfileInfo} from "./store/profileReduser";
 import {DownOutlined} from "@ant-design/icons";
 import Body from "./components/Body";
 import {resetApp} from "./store/store";
@@ -32,7 +29,6 @@ const UseRoutes = () => {
   const userData = useSelector(state => state.auth.userData)
   const isAuth = useSelector(state => state.auth.token)
   const params = useLocation()
-
 
   if (!isAuth) {
     return <AuthPage/>
@@ -71,7 +67,9 @@ const UseRoutes = () => {
           }}
         >
           <Switch>
-            <Route exact path={"/Profile"} render={() => <Profile/>}/>
+            <Route exact path={"/Profile"}>
+              <Profile/>
+              </Route>
             <Route exact path={"/Favorite-pokemons"} render={() => <FavoritePokemons/>}/>
             <Route exact path={"/Pokemons"} render={() => <Body/>}/>
             <Route exact path={"/Pokemons-tier-list"} render={() => <TierListPokemons/>}/>

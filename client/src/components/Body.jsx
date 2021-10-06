@@ -24,11 +24,10 @@ const Body = (props) => {
     dispatch(getPokemons(currentPage, pageSize))
   }, [pageSize, currentPage, currentType])
 
-  const totalPokemons=useSelector(state=>state.pokemonsPage.pokemonsCount)
+  const totalPokemons= useSelector(state=>state.pokemonsPage.pokemonsCount)
   const pokemons=useSelector(state=>state.pokemonsPage.pokemons)
   const currentPokemon=useSelector(state=>state.pokemonsPage.currentPokemon)
   const pokemonTypes=useSelector(state=>state.pokemonsPage.types)
-
 
   const dispatch = useDispatch()
 
@@ -42,8 +41,6 @@ const Body = (props) => {
   dispatch(setCurrentType(typeUrl))
     dispatch(setCurrentPage(1))
   }
-
-
 
   const favoritePokemons = useSelector(pokemonSelector)
   const {Search} = Input;
