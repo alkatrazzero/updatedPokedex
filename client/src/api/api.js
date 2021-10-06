@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const instance = axios.create({
+const apiCall = axios.create({
   baseURL: "https://pokeapi.co/api/v2/",
 });
 export const profileInfoAPI = {
@@ -36,6 +36,8 @@ export const authAPI = {
   login(authData) {
     return axios.post('/api/auth/login', authData).catch(function (error) {
       return error.response;
+    }).catch(function (error) {
+      return error.response;
     });
 
   }
@@ -44,7 +46,7 @@ export const authAPI = {
 
 export const favoritePokemonsAPI = {
   getFavoritePokemons(token) {
-    return axios.get(`api/pokemons/get`, {
+    return axios.get(`api/pokemons`, {
       headers: {
         Authorization: 'Bearer ' + token
       }
@@ -63,28 +65,28 @@ export const favoritePokemonsAPI = {
 
 }
 export const pokemonsAPI = {
+   getPokemonsFromServer(currentPage = 1, pageSize = 10){
+return axios.get(`api/pokemons/all`,{
+  headers: {
+    currentPage,pageSize
+  }
+})
+   },
 
-  getPokemons(currentPage = 1, pageSize = 10) {
-    return instance.get(`pokemon/?limit=${pageSize}&offset=${(currentPage - 1) * pageSize}`)
-      .then((response) => {
-        return response.data;
-      });
-  },
   getPokemon(url) {
-    return instance.get(url).then((response) => {
+    return apiCall.get(url).then((response) => {
       return response.data;
     });
   },
   getPokemonTypes() {
-    return instance.get('type').then((response) => {
+    return apiCall.get('type').then((response) => {
       return response.data;
     });
   },
   getPokemonByName(name) {
-    return instance.get(`pokemon/${name}`).then((response) => {
+    return apiCall.get(`pokemon/${name}`).then((response) => {
       return response.data
     })
   },
-
 
 }

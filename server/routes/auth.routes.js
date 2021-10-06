@@ -33,6 +33,7 @@ router.post('/register',
     }
   })
 
+
 router.post('/login',
   [
     check('email', 'Введите корректный email').normalizeEmail().isEmail(),

@@ -1,6 +1,7 @@
 import {favoritePokemonsAPI, pokemonsAPI} from "../api/api";
 import _ from "lodash"
-
+import {batch} from "react-redux";
+const FETCHING="FETCHING"
 const SET_POKEMONS = "SET_POKEMONS"
 const SET_TOTAL_COUNT = "SET_TOTAL_COUNT"
 const SET_POKEMONS_URL = "SET_POKEMONS_URL"
@@ -23,7 +24,8 @@ let initialState = {
   currentType: null,
   currentPokemon: null,
   favoritePokemons: [],
-  favoritePokemonsFeed: []
+  favoritePokemonsFeed: [],
+  fetching:null
 
 };
 const pokemonsReduser = (state = initialState, action) => {
@@ -76,9 +78,16 @@ const pokemonsReduser = (state = initialState, action) => {
       return {
         ...state, favoritePokemonsFeed: state.favoritePokemonsFeed.concat([action.pokemon])
       }
+    case FETCHING:
+      return{
+        ...state,fetching: action.status
+      }
     default:
       return state;
   }
+}
+export const fetching=(status)=>{
+  return {type:FETCHING,status}
 }
 export const currentPageSize = (size) => {
   return {type: SET_PAGE_SIZE, size}
@@ -132,15 +141,12 @@ export const addToFavoritePokemon = (favoritePokemon, token) => {
   }
 }
 
-
 export const removeFromFavoritePokemon = (favoritePokemon) => {
   return async (dispatch) => {
     await favoritePokemonsAPI.removeFavoritePokemon(favoritePokemon._id)
     dispatch(removeOndFavoritePokemon(favoritePokemon))
   }
 }
-
-
 export const getPokemonTypes = () => {
   return async (dispatch) => {
     let response = await pokemonsAPI.getPokemonTypes()
@@ -158,22 +164,22 @@ export const getPokemons = (page, pageSize) => {
     const currentType = getState().pokemonsPage.currentType
     if (currentType) {
       const offset = (page - 1) * pageSize
-      const responseArray = currentType.map((t) => pokemonsAPI.getPokemon(t))
-      let response = await Promise.all(responseArray);
+      const promiseArray = currentType.map((t) => pokemonsAPI.getPokemon(t))
+      let response = await Promise.all(promiseArray);
       let PokemonsArray = response.map((r) => r.pokemon)
-      const PokemonArr = _.flatten(PokemonsArray)
-      const uniqPokemonsArr = _.uniqBy(PokemonArr, p => p.pokemon.name)
-      const promiseArray = uniqPokemonsArr.slice(offset, offset + pageSize).map((pokemon) => pokemonsAPI.getPokemon(pokemon.pokemon.url))
-      const pokemonsArr = await Promise.all(promiseArray)
+      const uniqPokemonsArr = _.uniqBy(_.flatten(PokemonsArray), p => p.pokemon.name).slice(offset, offset + pageSize).map((pokemon) => pokemonsAPI.getPokemon(pokemon.pokemon.url))
+      const pokemonsArr = await Promise.all(uniqPokemonsArr)
       dispatch(setTotalPokemonsCount(uniqPokemonsArr.length))
       dispatch(setPokemons(pokemonsArr))
     } else {
-      let response = await pokemonsAPI.getPokemons(page, pageSize)
-      const promiseArray = response.results.map((pokemon) => pokemonsAPI.getPokemon(pokemon.url))
-      const pokemonsArr = await Promise.all(promiseArray)
-      dispatch(setPokemons(pokemonsArr));
-      dispatch(setTotalPokemonsCount(response.count));
-
+      dispatch(fetching(true))
+      let pokemons = await pokemonsAPI.getPokemonsFromServer(page, pageSize)
+      const {finalRes, count} = pokemons.data
+      batch(() => {
+        dispatch(fetching(false))
+        dispatch(setPokemons(finalRes));
+        dispatch(setTotalPokemonsCount(count));
+      });
     }
   }
 }

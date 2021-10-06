@@ -1,5 +1,7 @@
-import preloader from './Ghost.gif'
 import React from 'react'
+import preloader from "./img/preloader.gif"
 export const Preloader=()=>{
-    return <img src={preloader}/>
+    return <div className="preloader">
+        <img src={preloader} alt=""/>
+    </div>
 }

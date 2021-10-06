@@ -6,7 +6,7 @@ import {addToFavoritePokemon, removeFromFavoritePokemon, setCurrentPokemon} from
 import {useDispatch, useSelector} from "react-redux";
 
 
-export const ModalWindow = (props) => {
+ const ModalWindow = (props) => {
   const {
     targetPokemon,
     isModalVisible,
@@ -81,3 +81,4 @@ export const ModalWindow = (props) => {
   </div>
 
 }
+export default  ModalWindow

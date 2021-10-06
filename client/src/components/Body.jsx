@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {Pagination} from "antd";
-import {Input} from 'antd';
+import {Input, Pagination} from "antd";
 import PokemonTypes from "./RenderRokemonTypes/PokemonTypes";
-import {ComponentCreator} from "./componentCreatoeHelper";
-import {useDispatch, useSelector} from "react-redux";
+import {batch, useDispatch, useSelector} from "react-redux";
 import {pokemonSelector} from "../store/pokemonsSelector";
 import {SearchPokemonsModal} from "./RenderRokemonTypes/searchPokemons";
 import {
@@ -14,22 +12,33 @@ import {
   setCurrentType,
   setPageSize
 } from "../store/pokemonsReduser";
+import AllPokemons from "./RenderPokemons/AllPokemons";
+import MemeComponent from "./memeComponent";
 
+const {Search} = Input;
 const Body = (props) => {
-  const pageSize = useSelector(state => state.pokemonsPage.pageSize)
-  const currentType = useSelector(state => state.pokemonsPage.currentType)
-  const currentPage = useSelector(state => state.pokemonsPage.currentPage)
-  useEffect(() => {
+  const pokemonsPage = useSelector(state => state.pokemonsPage)
+  const {
+    pageSize,
+    currentType,
+    currentPage,
+    pokemonsCount: totalPokemons,
+    pokemons,
+    currentPokemon,
+    types: pokemonTypes
+  } = pokemonsPage
+  const favoritePokemons = useSelector(pokemonSelector)
+  useEffect(()=>{
     dispatch(getPokemonTypes())
-    dispatch(getPokemons(currentPage, pageSize))
+  },[])
+  useEffect(() => {
+    batch(() => {
+      dispatch(getPokemons(currentPage, pageSize))
+    })
+
   }, [pageSize, currentPage, currentType])
-
-  const totalPokemons= useSelector(state=>state.pokemonsPage.pokemonsCount)
-  const pokemons=useSelector(state=>state.pokemonsPage.pokemons)
-  const currentPokemon=useSelector(state=>state.pokemonsPage.currentPokemon)
-  const pokemonTypes=useSelector(state=>state.pokemonsPage.types)
-
   const dispatch = useDispatch()
+  const [valueString, setValue] = useState('')
 
   const onPageSizeChange = (size) => {
     dispatch(setPageSize(size))
@@ -38,14 +47,9 @@ const Body = (props) => {
     dispatch(setCurrentPage(page))
   };
   const getPokemonsByType = (typeUrl) => {
-  dispatch(setCurrentType(typeUrl))
+    dispatch(setCurrentType(typeUrl))
     dispatch(setCurrentPage(1))
   }
-
-  const favoritePokemons = useSelector(pokemonSelector)
-  const {Search} = Input;
-  const [valueString, setValue] = useState('')
-
   const onSearch = (value) => {
     if (value) {
       {
@@ -62,15 +66,15 @@ const Body = (props) => {
     <div>
       <div>
         <div className={"filterSettings"}>
+          {/*<MemeComponent/>*/}
           <PokemonTypes getPokemonsByType={getPokemonsByType} pokemonTypes={pokemonTypes}/>
           <Search size={"small"} placeholder={"input search text"} onChange={onChange} onSearch={onSearch}
                   value={valueString}
                   style={{width: 200}}/>
         </div>
-
         {currentPokemon ? <SearchPokemonsModal/> :
           <div>
-            <ComponentCreator favoritePokemons={favoritePokemons} pokemons={pokemons}/>
+            <AllPokemons favoritePokemons={favoritePokemons} pokemons={pokemons}/>
             <Pagination style={{marginTop: 20}} onShowSizeChange={(i, e) => onPageSizeChange(e)}
                         pageSize={pageSize}
                         current={currentPage} onChange={(page) => onPageChanged(page)}
@@ -83,4 +87,4 @@ const Body = (props) => {
     </div>
   </div>
 }
-export default React.memo(Body);
+export default Body

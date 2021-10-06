@@ -10,6 +10,7 @@ import {uniqFavoritePokemonsFeed} from "../../../store/pokemonsSelector";
 export const ProfileInfo = () => {
   const dispatch = useDispatch()
   const favoritePokemonsFeed = useSelector(uniqFavoritePokemonsFeed)
+
   const profileInfo = useSelector(state => state.profilePage.profileInfo)
   const favoritePokemon = useSelector(state => state.pokemonsPage.favoritePokemons)
   const [randomPokemons, setRandomPokemons] = useState([])

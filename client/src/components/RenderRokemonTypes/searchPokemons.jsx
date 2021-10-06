@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
-import {ModalWindow} from "../RenderPokemons/ModalWindow";
+import ModalWindow from "../RenderPokemons/ModalWindow";
 
 export const SearchPokemonsModal = () => {
 
