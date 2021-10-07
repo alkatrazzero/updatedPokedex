@@ -9,7 +9,7 @@ const PokemonCard = ({ showModal, setNewTargetPokemon, pokemons }) => (
     <div className="pokemonsContainer">
       <div className="allPokemons_row">
         {pokemons.map((p) => (
-          <div className="pokemonCard_container">
+          <div key={p.id} className="pokemonCard_container">
             <Card
               className="pokemonCard"
               onClick={function setTargetPokemon() {
@@ -20,21 +20,21 @@ const PokemonCard = ({ showModal, setNewTargetPokemon, pokemons }) => (
               hoverable
               cover={(
                 <img
-                className="pokemonCard_img"
-                alt={`${p.name}`}
-                src={p.sprites.other.dream_world.front_default || p.sprites.front_default}
-              />
+                  className="pokemonCard_img"
+                  alt={`${p.name}`}
+                  src={p.sprites.other.dream_world.front_default || p.sprites.front_default}
+                />
 )}
             >
               <div className="pokemonCard_body">
                 <Meta
-                title={p.name.toUpperCase()}
-                description={p.types.map((t) => (
+                  title={p.name.toUpperCase()}
+                  description={p.types.map((t) => (
                     <Tag key={t.id} style={{ color: POKEMON_CLASSNAMES[t.type.name] }}>
                       {t.type.name}
                     </Tag>
                   ))}
-              />
+                />
               </div>
             </Card>
           </div>
