@@ -6,7 +6,6 @@ import AllPokemons from './AllPokemons';
 import { getAllFavoritePokemons } from '../../store/pokemonsReduser';
 
 const FavoritePokemons = () => {
-  console.log('render');
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   useEffect(() => {

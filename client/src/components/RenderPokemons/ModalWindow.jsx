@@ -46,8 +46,8 @@ const ModalWindow = (props) => {
                 <div>{targetPokemon.name}</div>
                 {targetPokemon.types.map((t) => (
                   <Tag key={t.id} style={{ color: POKEMON_CLASSNAMES[t.type.name] }}>
-              {t.type.name}
-            </Tag>
+                    {t.type.name}
+                  </Tag>
                 ))}
               </div>
               <div className="modalWindow__info_img">
@@ -59,17 +59,17 @@ const ModalWindow = (props) => {
               <div className="followUnfollow">
                 {like ? (
                   <Button
-              onClick={
+                    onClick={
                     function remove() {
                       removeFromFavoritePokemonDispatch(targetPokemon);
                       unfollow();
                       setIsModalVisible(false);
                     }
 }
-              icon={<HeartTwoTone twoToneColor="#eb2f96" />}
-            />
+                    icon={<HeartTwoTone twoToneColor="#eb2f96" />}
+                  />
                 ) : (
-            <Button
+                  <Button
                     type="primary"
                     onClick={function add() {
                       addToFavoritePokemonDispatch(targetPokemon);

@@ -16,7 +16,8 @@ import AllPokemons from './RenderPokemons/AllPokemons';
 import MemeComponent from './memeComponent';
 
 const { Search } = Input;
-const Body = (props) => {
+const Body = () => {
+  const dispatch = useDispatch();
   const pokemonsPage = useSelector((state) => state.pokemonsPage);
   const {
     pageSize,
@@ -36,7 +37,6 @@ const Body = (props) => {
       dispatch(getPokemons(currentPage, pageSize));
     });
   }, [pageSize, currentPage, currentType]);
-  const dispatch = useDispatch();
   const [valueString, setValue] = useState('');
 
   const onPageSizeChange = (size) => {
@@ -51,10 +51,8 @@ const Body = (props) => {
   };
   const onSearch = (value) => {
     if (value) {
-      {
-        dispatch(getCurrentPokemon(value.toLowerCase()));
-        setValue('');
-      }
+      dispatch(getCurrentPokemon(value.toLowerCase()));
+      setValue('');
     }
   };
   const onChange = (event) => {

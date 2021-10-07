@@ -29,7 +29,7 @@ const AllPokemons = ({ favoritePokemons, pokemons }) => {
   return (
     <div className="pokemons">
       {!fetching ? (
-        <React.Fragment>
+        <div>
           <PokemonCard setNewTargetPokemon={setNewTargetPokemon} pokemons={pokemons} showModal={showModal} />
           <ModalWindow data={{
             targetPokemon,
@@ -40,7 +40,7 @@ const AllPokemons = ({ favoritePokemons, pokemons }) => {
             setIsModalVisible,
           }}
           />
-        </React.Fragment>
+        </div>
       ) : <div className="preloader"><Preloader /></div>}
     </div>
   );

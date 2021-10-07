@@ -10,15 +10,16 @@ router.post(
   async (req, res) => {
     try {
       const {
-        name, base_experience, sprites, types, abilities, owner,
+        name, base_experience, sprites, types, abilities,
       } = req.body.pokemon;
+
       const favoritePokemon = new FavoritePokemon({
         name,
         base_experience,
         sprites,
         types,
         abilities,
-        owner,
+        owner: req.user.user_id,
       });
       await favoritePokemon.save();
       res.status(200).json({ favoritePokemon });

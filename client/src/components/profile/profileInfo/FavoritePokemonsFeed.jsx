@@ -25,7 +25,7 @@ const FavoritePokemonsFeed = () => {
           <div className="top6favoritePokemons">
             Favorite Pokemons
             {randomPokemons.length > 1 ? randomPokemons.map((p) => (
-              <div key={p.id}>
+              <div>
                 <img
                   className="top6favoritePokemons__image"
                   src={p.sprites.other.dream_world.front_default || p.sprites.front_default}
