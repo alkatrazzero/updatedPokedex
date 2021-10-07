@@ -130,7 +130,10 @@ export const setPageSize = (size) => {
 }
 export const getAllFavoritePokemons = (token) => {
   return async (dispatch) => {
+    dispatch(fetching(true))
     let response = await favoritePokemonsAPI.getFavoritePokemons(token)
+    dispatch(fetching(false))
+
     dispatch(setAllFavoritePokemons(response.data.pokemons))
   }
 }
@@ -164,11 +167,13 @@ export const getPokemons = (page, pageSize) => {
     const currentType = getState().pokemonsPage.currentType
     if (currentType) {
       const offset = (page - 1) * pageSize
+      dispatch(fetching(true))
       const promiseArray = currentType.map((t) => pokemonsAPI.getPokemon(t))
       let response = await Promise.all(promiseArray);
       let PokemonsArray = response.map((r) => r.pokemon)
       const uniqPokemonsArr = _.uniqBy(_.flatten(PokemonsArray), p => p.pokemon.name).slice(offset, offset + pageSize).map((pokemon) => pokemonsAPI.getPokemon(pokemon.pokemon.url))
       const pokemonsArr = await Promise.all(uniqPokemonsArr)
+      dispatch(fetching(false))
       dispatch(setTotalPokemonsCount(uniqPokemonsArr.length))
       dispatch(setPokemons(pokemonsArr))
     } else {

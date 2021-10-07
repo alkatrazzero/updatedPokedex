@@ -8,14 +8,11 @@ import {resetApp} from "../store/store";
 
 
 export const LayoutHeader=()=>{
-  const dispatch = useDispatch()
+  const dispatch=useDispatch()
   const logoutDispatch = async () => {
     localStorage.removeItem('userData')
     localStorage.removeItem('userEmail')
-    dispatch(resetApp())
-
-  }
-
+    dispatch(resetApp())}
   const menu = (
     <Menu>
       <Menu.Item key="0">
@@ -23,15 +20,15 @@ export const LayoutHeader=()=>{
       </Menu.Item>
     </Menu>
   );
-  const userData = useSelector(state => state.auth.userData)
+  const {token,userData} = useSelector(state => state.auth)
   const params = useLocation()
 
   return <Header className="header">
     <div className="logo"/>
     <Row className={"headerMenu"} gutter={24}>
       <Col span={16}>
-        <Menu theme="dark" mode="horizontal" selectedKeys={[params.pathname || "/Profile"]}>
-          <Menu.Item key="/MyProfile"><Link to={"/Profile"}>My profile</Link></Menu.Item>
+        <Menu theme="dark" mode="horizontal" >
+          <Menu.Item key="/MyProfile"><Link to={`/Profile${userData}`}>My profile</Link></Menu.Item>
           <Menu.Item key="/pokemons"><Link to={"/Pokemons"}>All Pokemons</Link></Menu.Item>
           <Menu.Item key="/FavoritePokemons"><Link to={"/Favorite-pokemons"}>Favorite Pokemons</Link></Menu.Item>
           <Menu.Item key="/PokemonsTierList"><Link to={"/Pokemons-tier-list"}> Pokemons tier list</Link></Menu.Item>

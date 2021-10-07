@@ -1,4 +1,3 @@
-
 const SET_USER_PROFILE_INFO = "SET_USER_PROFILE_INFO"
 let initialState = {
   profileInfo: [],

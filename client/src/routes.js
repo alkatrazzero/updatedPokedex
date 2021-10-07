@@ -11,7 +11,7 @@ const Routes = () => {
     <Route exact path={"/Favorite-pokemons"}>
       <FavoritePokemons/>
     </Route>
-    <Route exact path={"/Profile"} render={() => <Profile/>}/>
+    <Route  path={"/Profile:id"} render={() => <Profile/>}/>
     <Route exact path={"/Pokemons"} render={() => <Body/>}/>
     <Route exact path={"/Pokemons-tier-list"} render={() => <TierListPokemons/>}/>
     <Redirect to={"/Favorite-pokemons"}/>

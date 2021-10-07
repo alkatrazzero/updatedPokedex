@@ -66,7 +66,7 @@ const Body = (props) => {
     <div>
       <div>
         <div className={"filterSettings"}>
-          {/*<MemeComponent/>*/}
+          <MemeComponent/>
           <PokemonTypes getPokemonsByType={getPokemonsByType} pokemonTypes={pokemonTypes}/>
           <Search size={"small"} placeholder={"input search text"} onChange={onChange} onSearch={onSearch}
                   value={valueString}
