@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import {RegisterForm} from "./RegisterForm";
-import {LoginForm} from "./LoginForm";
+import { RegisterForm } from './RegisterForm';
+import { LoginForm } from './LoginForm';
 
-const AuthPage = () => {
-  return <div>
-    <LoginForm/>
-    <RegisterForm/>
+const AuthPage = () => (
+  <div>
+    <LoginForm />
+    <RegisterForm />
   </div>
-}
+);
 export default AuthPage;
