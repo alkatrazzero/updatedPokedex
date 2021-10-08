@@ -50,10 +50,12 @@ const ModalWindow = (props) => {
                   </Tag>
                 ))}
               </div>
-              <div className="modalWindow__info_img">
+              <div>
                 <img
-                  style={{ width: 150, height: 150 }}
+                  className="modalWindow__info_img"
+
                   src={targetPokemon.sprites.other.dream_world.front_default || targetPokemon.sprites.front_default}
+                  alt="f"
                 />
               </div>
               <div className="followUnfollow">

@@ -3,6 +3,8 @@ import axios from 'axios';
 const apiCall = axios.create({
   baseURL: 'https://pokeapi.co/api/v2/',
 });
+// api calls for profileInfo
+
 export const profileInfoAPI = {
   updateProfileInfo(dataInfo, token) {
     return axios.post('/api/profile/update', dataInfo, {
@@ -29,7 +31,7 @@ export const authAPI = {
     return axios.post('/api/auth/login', authData).catch((error) => error.response).catch((error) => error.response);
   },
 };
-// api calls for render pokemons
+// api calls for favoritepokemons
 
 export const favoritePokemonsAPI = {
   getFavoritePokemons(token) {
@@ -51,6 +53,8 @@ export const favoritePokemonsAPI = {
   },
 
 };
+// api calls for allpokemons
+
 export const pokemonsAPI = {
   getPokemonsFromServer(currentPage = 1, pageSize = 10) {
     return axios.get('api/pokemons/all', {

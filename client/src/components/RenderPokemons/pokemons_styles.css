@@ -30,7 +30,9 @@
 }
 
 .modalWindow__info_img{
-    width: 200px;
+    /*width: 200px;*/
+ width: 150px;
+    height: 150px;
 }
 .preloader{
     display: flex;

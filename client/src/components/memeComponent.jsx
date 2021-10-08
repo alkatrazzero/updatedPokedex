@@ -6,8 +6,8 @@ import { POKEMON_CLASSNAMES } from '../assets/types';
 // React.memo перерендеривает компонент после получения новых пропсов
 const MemeComponent = () => {
   const pokemons = useSelector((state) => state.pokemonsPage.pokemons);
-  const computeStrongestPokemon = (pokemons) => {
-    const max = pokemons.length > 0 && pokemons.reduce((acc, curr) => (acc.weight > curr.weight ? acc : curr));
+  const computeStrongestPokemon = (strongest) => {
+    const max = strongest.length > 0 && strongest.reduce((acc, curr) => (acc.weight > curr.weight ? acc : curr));
     return max;
   };
 
@@ -27,7 +27,8 @@ const MemeComponent = () => {
         <img
           className="pokemonCard_img"
           alt={`${memoizedValue.name}`}
-          src={memoizedValue.sprites.other.dream_world.front_default || memoizedValue.sprites.front_default}
+          src={memoizedValue.sprites.other.dream_world.front_default
+            || memoizedValue.sprites.front_default}
         />
 )}
     >

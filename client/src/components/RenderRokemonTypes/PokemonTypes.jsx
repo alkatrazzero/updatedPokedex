@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './renderTypes.css';
 import { TreeSelect } from 'antd';
 
 const PokemonTypes = (props) => {
@@ -28,7 +28,7 @@ const PokemonTypes = (props) => {
   };
   return (
     <div>
-      <div style={{ width: 199 }}>
+      <div className="TreeSelectTypes">
         <TreeSelect style={{ width: '100%' }} size="small" {...tProps} />
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Button } from 'antd';
 import { UpdateProfileForm } from './updateProfileForm';
 import avatar from '../../../assets/img/nullAvatar.png';
-
+import '../profile.css';
 import FavoritePokemonsFeed from './FavoritePokemonsFeed';
 
 const ProfileInfo = () => {
@@ -20,8 +20,8 @@ const ProfileInfo = () => {
                 <div className="container">
                   <div className="profile__row">
                     <div className="avatar_button_block">
-                      <div className="profile__avatar">
-                        <img style={{ width: 200 }} src={avatar} />
+                      <div>
+                        <img className="profile__avatar" src={avatar} />
                       </div>
                       <div className="profile__button">
                         <Button onClick={() => setEditProfile(true)}> Edit Profile</Button>

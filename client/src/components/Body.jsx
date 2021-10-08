@@ -4,6 +4,7 @@ import { batch, useDispatch, useSelector } from 'react-redux';
 import PokemonTypes from './RenderRokemonTypes/PokemonTypes';
 import { pokemonSelector } from '../store/pokemonsSelector';
 import { SearchPokemonsModal } from './RenderRokemonTypes/searchPokemons';
+import './body.css';
 import {
   getCurrentPokemon,
   getPokemons,
@@ -67,12 +68,13 @@ const Body = () => {
             <MemeComponent />
             <PokemonTypes getPokemonsByType={getPokemonsByType} pokemonTypes={pokemonTypes} />
             <Search
+              className="search_field"
               size="small"
               placeholder="input search text"
               onChange={onChange}
               onSearch={onSearch}
               value={valueString}
-              style={{ width: 200 }}
+
             />
           </div>
           {currentPokemon ? <SearchPokemonsModal />
@@ -80,7 +82,6 @@ const Body = () => {
               <div>
                 <AllPokemons favoritePokemons={favoritePokemons} pokemons={pokemons} />
                 <Pagination
-                  style={{ marginTop: 20 }}
                   onShowSizeChange={(i, e) => onPageSizeChange(e)}
                   pageSize={pageSize}
                   current={currentPage}
