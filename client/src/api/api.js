@@ -1,9 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 
-const apiCall = axios.create({
-  baseURL: 'https://pokeapi.co/api/v2/',
-});
 // api calls for profileInfo
 
 export const profileInfoAPI = {
@@ -21,7 +17,7 @@ export const profileInfoAPI = {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response;
+    return response.data.profileInfo;
   },
 };
 
@@ -70,7 +66,7 @@ export const pokemonsAPI = {
     return response;
   },
   async getPokemonTypes() {
-    const response = await apiCall.get('type');
+    const response = await axios.get('https://pokeapi.co/api/v2/type');
     return response.data;
   },
   async getPokemonByName(name, page, pageSize) {

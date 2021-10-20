@@ -1,7 +1,7 @@
-const SET_USER_TOKEN = 'SET_USER_TOKEN';
-const LOGOUT = 'LOGOUT';
-const SET_USER_DATA = 'SET_USER_DATA';
-const RESET = 'RESET';
+import {
+  LOGOUT, RESET, SET_USER_DATA, SET_USER_TOKEN,
+} from './constants';
+
 const initialState = {
   token: null,
   userId: null,
@@ -29,6 +29,3 @@ export const authReduser = (state = initialState, action) => {
       return state;
   }
 };
-
-export const setUserToken = (token) => ({ type: SET_USER_TOKEN, token });
-export const setUserData = (userData) => ({ type: SET_USER_DATA, userData });

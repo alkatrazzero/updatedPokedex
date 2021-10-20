@@ -5,7 +5,7 @@ import {
 import '../profile.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { profileInfoAPI } from '../../../api/api';
-import { setUserProfileInfo } from '../../../store/profileReduser';
+import { setUserProfileInfo } from '../../../store/profileActions/profileActions';
 
 export const UpdateProfileForm = ({ setEditProfile }) => {
   const dispatch = useDispatch();

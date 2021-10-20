@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import './profile.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { profileInfoAPI } from '../../api/api';
-import { setUserProfileInfo } from '../../store/profileReduser';
+import { setUserProfileInfo } from '../../store/profileActions/profileActions';
 import ProfileInfo from './profileInfo/profileInfo';
-import { fetching } from '../../store/pokemonsReduser';
 import { Preloader } from '../../assets/Preloader';
+import { fetching } from '../../store/pokemonsActions/pokemonsActions';
 
 const Profile = () => {
   const dispatch = useDispatch();

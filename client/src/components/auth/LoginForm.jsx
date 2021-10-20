@@ -4,8 +4,8 @@ import {
 } from 'antd';
 import { useDispatch } from 'react-redux';
 import { authAPI } from '../../api/api';
-import { setUserData, setUserToken } from '../../store/authReduser';
 import './auth.css';
+import { setUserData, setUserToken } from '../../store/authActions/authActions';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();

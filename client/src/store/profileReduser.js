@@ -1,4 +1,5 @@
-const SET_USER_PROFILE_INFO = 'SET_USER_PROFILE_INFO';
+import { SET_USER_PROFILE_INFO } from './constants';
+
 const initialState = {
   profileInfo: [],
 
@@ -14,5 +15,3 @@ export const profileReduser = (state = initialState, action) => {
       return state;
   }
 };
-
-export const setUserProfileInfo = (profileInfo) => ({ type: SET_USER_PROFILE_INFO, profileInfo });

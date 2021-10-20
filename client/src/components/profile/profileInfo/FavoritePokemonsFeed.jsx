@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uniqFavoritePokemonsFeed } from '../../../store/pokemonsSelector';
-import { setFavoritePokemonsFeed } from '../../../store/pokemonsReduser';
 import { getRandomArrayElements } from '../../../assets/rundomValueFavoritePokemonsArr';
+import { setFavoritePokemonsFeed } from '../../../store/pokemonsActions/pokemonsActions';
 
 const FavoritePokemonsFeed = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const FavoritePokemonsFeed = () => {
         <div className="favoritePokemons__row">
           <div className="top6favoritePokemons">
             Favorite Pokemons
-            {randomPokemons.length > 1 ? randomPokemons.map((p) => (
+            {randomPokemons.length > 5 ? randomPokemons.map((p) => (
               <div>
                 <img
                   className="top6favoritePokemons__image"

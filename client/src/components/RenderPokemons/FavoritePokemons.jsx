@@ -3,11 +3,10 @@ import 'antd/dist/antd.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { pokemonSelector } from '../../store/pokemonsSelector';
 import AllPokemons from './AllPokemons';
-import { getAllFavoritePokemons, setRenderFavorite } from '../../store/pokemonsReduser';
+import { getAllFavoritePokemons, setRenderFavorite } from '../../store/pokemonsActions/pokemonsActions';
 
 const FavoritePokemons = () => {
   const dispatch = useDispatch();
-  // const favoritePokemons=(sta)
   const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     dispatch(getAllFavoritePokemons(token));

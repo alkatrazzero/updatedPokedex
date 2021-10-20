@@ -5,6 +5,7 @@ const config = require('config');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const getAllPokemons = require('./midleware/getAllPokemons');
 
 // Без лимита слишком болшой payload при добавление покемона в любимых
 app.use(bodyParser({ limit: '50mb' }));
@@ -29,4 +30,4 @@ async function start() {
   }
 }
 
-start();
+start().then(() => getAllPokemons());

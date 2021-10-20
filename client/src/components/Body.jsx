@@ -11,7 +11,7 @@ import {
   setCurrentPage,
   setCurrentType,
   setPageSize, setRender,
-} from '../store/pokemonsReduser';
+} from '../store/pokemonsActions/pokemonsActions';
 import AllPokemons from './RenderPokemons/AllPokemons';
 import MemeComponent from './memeComponent';
 

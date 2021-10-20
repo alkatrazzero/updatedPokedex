@@ -10,16 +10,24 @@ router.post(
   '/add-favorite', auth,
   async (req, res) => {
     try {
-      const favoritePokemon = new FavoritePokemon({
-        pokemonId: req.body.pokemonId,
-        owner: req.user.user_id,
-      });
-      await favoritePokemon.save();
-      const pokemon = await AllPokemons.findById({ _id: req.body.pokemonId });
-      console.log(pokemon);
-      res.status(200).json({ pokemon });
+      if (req.user.user_id) {
+        const favoritePokemon = new FavoritePokemon({
+          pokemonId: req.body.pokemonId,
+          owner: req.user.user_id,
+        });
+        await favoritePokemon.save();
+      } else {
+        res.status(402).json({ message: 'Вы не авторизованы' });
+      }
+      if (req.body.pokemonId) {
+        await AllPokemons.findById({ _id: req.body.pokemonId }, (err, pokemon) => {
+          if (err) {
+            console.log(err);
+          }
+          res.status(200).json({ pokemon });
+        });
+      } else res.status(404).json({ message: 'такого покемона не существует' });
     } catch (e) {
-      console.log(e);
       res.status(500).json({ message: 'something wrong' });
     }
   },
@@ -30,10 +38,18 @@ router.get('/type',
       const { currentPage, pageSize } = req.query;
       const str = [req.query.type];
       const type = str[0].split(',');
-      const offset = (currentPage - 1) * pageSize;
-      const totalCount = await AllPokemons.countDocuments(({ types: { $elemMatch: { 'type.name': { $in: type } } } }));
-      const pokemons = await AllPokemons.find(({ types: { $elemMatch: { 'type.name': { $in: type } } } })).skip(offset).limit(parseInt(pageSize));
-      res.status(200).json({ pokemons, totalCount });
+      if (req.query.type) {
+        const offset = (currentPage - 1) * pageSize;
+        const totalCount = await AllPokemons.countDocuments(({ types: { $elemMatch: { 'type.name': { $in: type } } } }));
+        await AllPokemons.find(({ types: { $elemMatch: { 'type.name': { $in: type } } } }), (err, pokemons) => {
+          if (err) {
+            console.log(err);
+          }
+          res.status(200).json({ pokemons, totalCount });
+        }).skip(offset).limit(parseInt(pageSize));
+      } else {
+        res.status(400).json({ message: 'тип не выбран' });
+      }
     } catch (e) {
       res.status(500).json({ message: 'something wrong' });
     }
@@ -42,11 +58,14 @@ router.get('/name',
   async (req, res) => {
     try {
       const { name, currentPage, pageSize } = req.query;
-      console.log(name, currentPage, pageSize);
       const offset = (currentPage - 1) * pageSize;
       const totalCount = await AllPokemons.countDocuments({ name: new RegExp(`^${name}`, 'i') });
-      const pokemons = await AllPokemons.find({ name: new RegExp(`^${name}`, 'i') }).skip(offset).limit(parseInt(pageSize));
-      res.status(200).json({ pokemons, totalCount });
+      await AllPokemons.find({ name: new RegExp(`^${name}`, 'i') }, (err, pokemons) => {
+        if (err) {
+          console.log(err);
+        }
+        res.status(200).json({ pokemons, totalCount });
+      }).skip(offset).limit(parseInt(pageSize));
     } catch (e) {
       res.status(500).json({ message: 'something wrong' });
     }
@@ -58,8 +77,12 @@ router.get('/all',
       const { currentPage, pageSize } = req.query;
       const offset = (currentPage - 1) * pageSize;
       const totalCount = await AllPokemons.countDocuments({ pokemon: Object });
-      const pokemons = await AllPokemons.find({ pokemon: Object }).skip(offset).limit(parseInt(pageSize));
-      res.status(200).json({ pokemons, totalCount });
+      await AllPokemons.find({ pokemon: Object }, (err, pokemons) => {
+        if (err) {
+          console.log(err);
+        }
+        res.status(200).json({ pokemons, totalCount });
+      }).skip(offset).limit(parseInt(pageSize));
     } catch (e) {
       res.status(500).json({ message: 'something wrong' });
     }
@@ -79,11 +102,11 @@ router.get(
           $lookup: {
             from: 'allpokemons',
             localField:
-          'pokemonId',
+              'pokemonId',
             foreignField:
-          '_id',
+              '_id',
             as:
-          'pokemon',
+              'pokemon',
           }
           ,
         },
@@ -91,7 +114,7 @@ router.get(
           $unwind: {
             path: '$pokemon',
             preserveNullAndEmptyArrays:
-          true,
+              true,
           }
           ,
         },
@@ -116,8 +139,12 @@ router.post(
   '/remove/:id', // remove-favorite
   async (req, res) => {
     try {
-      const pokemons = await FavoritePokemon.findOneAndDelete({ pokemonId: req.params.id });
-      res.json({ pokemons });
+      await FavoritePokemon.findOneAndDelete({ pokemonId: req.params.id }, (err, pokemons) => {
+        if (err) {
+          console.log(err);
+        }
+        res.json({ pokemons });
+      });
     } catch (e) {
       console.log(e);
       res.status(500).json({ message: 'something wrong' });
