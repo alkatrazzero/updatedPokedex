@@ -14,7 +14,7 @@ const PokemonCard = ({ showModal, setNewTargetPokemon, pokemons }) => (
               className="pokemonCard"
               onClick={function setTargetPokemon() {
                 setNewTargetPokemon(p);
-                showModal(p.name);
+                showModal();
               }}
               size="default"
               hoverable

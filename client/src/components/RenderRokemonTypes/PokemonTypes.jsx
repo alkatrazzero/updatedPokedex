@@ -5,7 +5,7 @@ import { TreeSelect } from 'antd';
 const PokemonTypes = (props) => {
   const treeData = [];
   {
-    props.pokemonTypes.map((type) => treeData.push({ title: type.name, value: type.url, key: type.name }));
+    props.pokemonTypes.map((type) => treeData.push({ title: type.name, value: type.name, key: type.name }));
   }
   const { SHOW_PARENT } = TreeSelect;
   const [stateValue, setStateValue] = useState([]);

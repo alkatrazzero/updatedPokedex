@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useSelector } from 'react-redux';
 import { Card, Tag } from 'antd';
 import Meta from 'antd/es/card/Meta';
@@ -6,10 +7,8 @@ import { POKEMON_CLASSNAMES } from '../assets/types';
 // React.memo перерендеривает компонент после получения новых пропсов
 const MemeComponent = () => {
   const pokemons = useSelector((state) => state.pokemonsPage.pokemons);
-  const computeStrongestPokemon = (strongest) => {
-    const max = strongest.length > 0 && strongest.reduce((acc, curr) => (acc.weight > curr.weight ? acc : curr));
-    return max;
-  };
+  const computeStrongestPokemon = (strongest) => strongest.length
+      > 0 && strongest.reduce((acc, curr) => (acc.weight > curr.weight ? acc : curr));
 
   const memoizedValue = useMemo(() => computeStrongestPokemon(pokemons), [pokemons]);
 

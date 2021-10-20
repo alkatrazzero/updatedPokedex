@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Pagination } from 'antd';
-import { batch, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PokemonTypes from './RenderRokemonTypes/PokemonTypes';
 import { pokemonSelector } from '../store/pokemonsSelector';
 import { SearchPokemonsModal } from './RenderRokemonTypes/searchPokemons';
@@ -8,10 +8,9 @@ import './body.css';
 import {
   getCurrentPokemon,
   getPokemons,
-  getPokemonTypes,
   setCurrentPage,
   setCurrentType,
-  setPageSize,
+  setPageSize, setRender,
 } from '../store/pokemonsReduser';
 import AllPokemons from './RenderPokemons/AllPokemons';
 import MemeComponent from './memeComponent';
@@ -28,36 +27,34 @@ const Body = () => {
     pokemons,
     currentPokemon,
     types: pokemonTypes,
+    isRendered,
   } = pokemonsPage;
   const favoritePokemons = useSelector(pokemonSelector);
   useEffect(() => {
-    dispatch(getPokemonTypes());
-  }, []);
-  useEffect(() => {
-    batch(() => {
+    if (!isRendered) {
       dispatch(getPokemons(currentPage, pageSize));
-    });
-  }, [pageSize, currentPage, currentType]);
+      dispatch(setRender(true));
+    }
+  }, [pageSize, currentPage, currentType, isRendered,
+  ]);
   const [valueString, setValue] = useState('');
 
   const onPageSizeChange = (size) => {
     dispatch(setPageSize(size));
+    dispatch(setRender(false));
   };
   const onPageChanged = (page) => {
     dispatch(setCurrentPage(page));
+    dispatch(setRender(false));
   };
   const getPokemonsByType = (typeUrl) => {
     dispatch(setCurrentType(typeUrl));
     dispatch(setCurrentPage(1));
-  };
-  const onSearch = (value) => {
-    if (value) {
-      dispatch(getCurrentPokemon(value.toLowerCase()));
-      setValue('');
-    }
+    dispatch(setRender(false));
   };
   const onChange = (event) => {
     setValue(event.target.value);
+    dispatch(getCurrentPokemon(event.target.value.toLowerCase(), currentPage, pageSize));
   };
 
   return (
@@ -72,7 +69,6 @@ const Body = () => {
               size="small"
               placeholder="input search text"
               onChange={onChange}
-              onSearch={onSearch}
               value={valueString}
 
             />

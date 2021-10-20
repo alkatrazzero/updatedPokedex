@@ -2,21 +2,12 @@ import {
   createStore, combineReducers, applyMiddleware, compose,
 } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import pokemonsReduser from './pokemonsReduser';
+import pokemonsReducer from './pokemonsReduser';
 import { authReduser } from './authReduser';
 import { profileReduser } from './profileReduser';
 
-const RESET_APP = 'RESET_APP';
-
-const rootReducer = (state, action) => {
-  if (action.type === 'RESET_APP') {
-    state = undefined;
-  }
-  return reducers(state, action);
-};
-export const resetApp = () => ({ type: RESET_APP });
-let reducers = combineReducers({
-  pokemonsPage: pokemonsReduser,
+export const reducers = combineReducers({
+  pokemonsPage: pokemonsReducer,
   auth: authReduser,
   profilePage: profileReduser,
 });

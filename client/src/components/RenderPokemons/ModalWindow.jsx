@@ -1,17 +1,28 @@
 import { Button, Modal, Tag } from 'antd';
 import { HeartTwoTone } from '@ant-design/icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToFavoritePokemon, removeFromFavoritePokemon, setCurrentPokemon } from '../../store/pokemonsReduser';
 import { POKEMON_CLASSNAMES } from '../../assets/types';
 
 const ModalWindow = (props) => {
   const {
+    favoritePokemons,
     targetPokemon,
     isModalVisible,
-    like,
-    follow, unfollow, setIsModalVisible,
+    setIsModalVisible,
   } = props.data;
+  const [like, setLike] = useState(null);
+  const follow = () => setLike(true);
+  const unfollow = () => setLike(false);
+
+  useEffect(() => {
+    if (isModalVisible === true && favoritePokemons.some((e) => e._id === targetPokemon._id)) {
+      follow();
+    } else {
+      unfollow();
+    }
+  }, [isModalVisible, favoritePokemons]);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const addToFavoritePokemonDispatch = (favoritePokemon) => (
@@ -61,20 +72,19 @@ const ModalWindow = (props) => {
               <div className="followUnfollow">
                 {like ? (
                   <Button
-                    onClick={
-                    function remove() {
-                      removeFromFavoritePokemonDispatch(targetPokemon);
+                    onClick={() => {
+                      removeFromFavoritePokemonDispatch(targetPokemon._id);
                       unfollow();
                       setIsModalVisible(false);
-                    }
-}
+                    }}
+
                     icon={<HeartTwoTone twoToneColor="#eb2f96" />}
                   />
                 ) : (
                   <Button
                     type="primary"
-                    onClick={function add() {
-                      addToFavoritePokemonDispatch(targetPokemon);
+                    onClick={() => {
+                      addToFavoritePokemonDispatch(targetPokemon._id);
                       follow();
                     }}
                   >

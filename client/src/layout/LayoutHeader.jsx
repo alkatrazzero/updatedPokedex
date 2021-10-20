@@ -1,19 +1,16 @@
 import {
   Col, Dropdown, Menu, Row,
 } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { DownOutlined } from '@ant-design/icons';
 import { Header } from 'antd/es/layout/layout';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetApp } from '../store/store';
+import { useSelector } from 'react-redux';
 
 export const LayoutHeader = () => {
-  const dispatch = useDispatch();
   const logoutDispatch = async () => {
     localStorage.removeItem('userData');
     localStorage.removeItem('userEmail');
-    dispatch(resetApp());
   };
   const menu = (
     <Menu>
@@ -22,8 +19,7 @@ export const LayoutHeader = () => {
       </Menu.Item>
     </Menu>
   );
-  const { token, userData } = useSelector((state) => state.auth);
-  const params = useLocation();
+  const { userData } = useSelector((state) => state.auth);
 
   return (
     <Header className="header">

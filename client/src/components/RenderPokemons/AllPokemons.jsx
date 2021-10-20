@@ -10,21 +10,10 @@ const AllPokemons = ({ favoritePokemons, pokemons }) => {
   useEffect(() => {
     document.title = 'Pokemons';
   }, []);
-  const [like, setLike] = useState(null);
-  const follow = () => setLike(true);
-  const unfollow = () => setLike(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [targetPokemon, setNewTargetPokemon] = useState();
-  const showModal = (name) => {
-    if (favoritePokemons.some((e) => e.name === name)) {
-      follow();
-      setIsModalVisible(true);
-    } else {
-      (
-        setIsModalVisible(true),
-        unfollow()
-      );
-    }
+  const showModal = () => {
+    setIsModalVisible(true);
   };
   return (
     <div className="pokemons">
@@ -32,11 +21,9 @@ const AllPokemons = ({ favoritePokemons, pokemons }) => {
         <div>
           <PokemonCard setNewTargetPokemon={setNewTargetPokemon} pokemons={pokemons} showModal={showModal} />
           <ModalWindow data={{
+            favoritePokemons,
             targetPokemon,
             isModalVisible,
-            like,
-            follow,
-            unfollow,
             setIsModalVisible,
           }}
           />

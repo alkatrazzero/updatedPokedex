@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 
 const apiCall = axios.create({
@@ -6,72 +7,80 @@ const apiCall = axios.create({
 // api calls for profileInfo
 
 export const profileInfoAPI = {
-  updateProfileInfo(dataInfo, token) {
-    return axios.post('/api/profile/update', dataInfo, {
+  async updateProfileInfo(dataInfo, token) {
+    const response = await axios.post('/api/profile/update', dataInfo, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => res.data.profileInfo);
+    });
+    return response.data.profileInfo;
   },
-  getProfileInfo(token) {
-    return axios.get('api/profile/get', {
+  async getProfileInfo(token) {
+    const response = await axios.get('api/profile', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => res.data.profileInfo);
+    });
+    return response;
   },
 };
 
 // api calls for autorization
 export const authAPI = {
-  register(authData) {
-    return axios.post('/api/auth/register', authData).then((response) => response).catch((error) => error.response);
+  async register(authData) {
+    const response = await axios.post('/api/auth/register', authData).catch((error) => error.response);
+    return response;
   },
-  login(authData) {
-    return axios.post('/api/auth/login', authData).catch((error) => error.response).catch((error) => error.response);
+
+  async login(authData) {
+    const response = await axios.post('/api/auth/login', authData).catch((error) => error.response);
+    return response;
   },
 };
 // api calls for favoritepokemons
 
 export const favoritePokemonsAPI = {
-  getFavoritePokemons(token) {
-    return axios.get('api/pokemons', {
+  async getFavoritePokemons(token) {
+    const response = await axios.get('api/pokemons/favorites', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    return response;
   },
-  setFavoritePokemon(pokemon, token) {
-    return axios.post('api/pokemons/add', { pokemon }, {
+  async setFavoritePokemon(pokemonId, token) {
+    const response = await axios.post('api/pokemons/add-favorite', { pokemonId }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    return response;
   },
-  removeFavoritePokemon(id) {
-    return axios.post(`api/pokemons/remove/${id}`, {});
+  async removeFavoritePokemon(id) {
+    const response = await axios.post(`api/pokemons/remove/${id}`, {});
+    return response;
   },
 
 };
 // api calls for allpokemons
 
 export const pokemonsAPI = {
-  getPokemonsFromServer(currentPage = 1, pageSize = 10) {
-    return axios.get('api/pokemons/all', {
-      headers: {
-        currentPage, pageSize,
-      },
-    });
+  async getPokemonsFromServer(currentPage = 1, pageSize = 10) {
+    const response = await axios.get(`api/pokemons/all?currentPage=${currentPage}&pageSize=${pageSize}`);
+    return response;
   },
-
-  getPokemon(url) {
-    return apiCall.get(url).then((response) => response.data);
+  async getPokemonTypes() {
+    const response = await apiCall.get('type');
+    return response.data;
   },
-  getPokemonTypes() {
-    return apiCall.get('type').then((response) => response.data);
+  async getPokemonByName(name, page, pageSize) {
+    const response = await axios.get(`api/pokemons/name?name=${name}&currentPage=${page}&pageSize=${pageSize}`);
+    return response.data;
   },
-  getPokemonByName(name) {
-    return apiCall.get(`pokemon/${name}`).then((response) => response.data);
+  async getPokemonByType(type, page, pageSize) {
+    const response = await axios.get(`api/pokemons/type?type=${type}&currentPage=${page}&pageSize=${pageSize}`);
+    console.log(response);
+    return response.data;
   },
 
 };

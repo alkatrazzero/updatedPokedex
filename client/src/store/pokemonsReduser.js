@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { batch } from 'react-redux';
 import { favoritePokemonsAPI, pokemonsAPI } from '../api/api';
 
+const SET_RENDER = 'SET_RENDER';
 const FETCHING = 'FETCHING';
 const SET_POKEMONS = 'SET_POKEMONS';
 const SET_TOTAL_COUNT = 'SET_TOTAL_COUNT';
@@ -15,8 +15,10 @@ const SET_FAVORITE_POKEMON = 'SET_FAVORITE_POKEMON';
 const DELETE_FAVORITE_POKEMON = 'DELETE_FAVORITE_POKEMON';
 const SET_ALL_FAVORITE_POKEMONS = 'SET_ALL_FAVORITE_POKEMONS';
 const SET_FAVORITE_POKEMON_FEED = 'SET_FAVORITE_POKEMON_FEED';
+const FAVORITE_POKEMONS_IS_RENDERED = 'FAVORITE_POKEMONS_IS_RENDERED';
 const initialState = {
-  autorized: true,
+  isFavoriteRendered: false,
+  isRendered: false,
   pokemons: [],
   pokemonsCount: null,
   pageSize: 56,
@@ -29,12 +31,12 @@ const initialState = {
   fetching: null,
 
 };
-const pokemonsReduser = (state = initialState, action) => {
+const pokemonsReducer = (state = initialState, action) => {
   switch (action.type) {
     case DELETE_FAVORITE_POKEMON:
-      const pokemonToRemove = action.favoritePokemon.name;
+      const pokemonToRemove = action.favoritePokemon;
       return {
-        ...state, favoritePokemons: state.favoritePokemons.filter((p) => p.name !== pokemonToRemove),
+        ...state, favoritePokemons: state.favoritePokemons.filter((p) => p._id !== pokemonToRemove),
       };
     case SET_FAVORITE_POKEMON:
       return {
@@ -83,6 +85,10 @@ const pokemonsReduser = (state = initialState, action) => {
       return {
         ...state, fetching: action.status,
       };
+    case SET_RENDER:
+      return { ...state, isRendered: action.status };
+    case FAVORITE_POKEMONS_IS_RENDERED:
+      return { ...state, isFavoriteRendered: action.status };
     default:
       return state;
   }
@@ -99,6 +105,8 @@ export const setCurrentPage = (page) => ({ type: SET_CURRENT_PAGE, page });
 export const setCurrentPokemon = (pokemon) => ({ type: SET_CURRENT_POKEMON, pokemon });
 export const setAllFavoritePokemons = (pokemons) => ({ type: SET_ALL_FAVORITE_POKEMONS, pokemons });
 export const setFavoritePokemonsFeed = (pokemon) => ({ type: SET_FAVORITE_POKEMON_FEED, pokemon });
+export const setRender = (status) => ({ type: SET_RENDER, status });
+export const setRenderFavorite = (status) => ({ type: FAVORITE_POKEMONS_IS_RENDERED, status });
 
 export const setPageSize = (size) => (dispatch) => {
   dispatch(currentPageSize(size));
@@ -112,44 +120,37 @@ export const getAllFavoritePokemons = (token) => async (dispatch) => {
 };
 export const addToFavoritePokemon = (favoritePokemon, token) => async (dispatch) => {
   const response = await favoritePokemonsAPI.setFavoritePokemon(favoritePokemon, token);
-  dispatch(addNewFavoritePokemon(response.data.favoritePokemon));
+  dispatch(addNewFavoritePokemon(response.data.pokemon));
 };
 
 export const removeFromFavoritePokemon = (favoritePokemon) => async (dispatch) => {
-  await favoritePokemonsAPI.removeFavoritePokemon(favoritePokemon._id);
+  await favoritePokemonsAPI.removeFavoritePokemon(favoritePokemon);
   dispatch(removeOndFavoritePokemon(favoritePokemon));
 };
 export const getPokemonTypes = () => async (dispatch) => {
   const response = await pokemonsAPI.getPokemonTypes();
   dispatch(setTypes(response.results));
 };
-export const getCurrentPokemon = (pokemon) => async (dispatch) => {
-  const response = await pokemonsAPI.getPokemonByName(pokemon);
-  dispatch(setCurrentPokemon(response));
+export const getCurrentPokemon = (pokemon, page, pageSize) => async (dispatch) => {
+  const response = await pokemonsAPI.getPokemonByName(pokemon, page, pageSize);
+  dispatch(setTotalPokemonsCount(response.totalCount));
+  dispatch(setPokemons(response.pokemons));
 };
 export const getPokemons = (page, pageSize) => async (dispatch, getState) => {
   const { currentType } = getState().pokemonsPage;
   if (currentType) {
-    const offset = (page - 1) * pageSize;
-    dispatch(fetching(true));
-    const promiseArray = currentType.map((t) => pokemonsAPI.getPokemon(t));
-    const response = await Promise.all(promiseArray);
-    const PokemonsArray = response.map((r) => r.pokemon);
-    const uniqPokemonsArr = _.uniqBy(_.flatten(PokemonsArray), (p) => p.pokemon.name).slice(offset, offset + pageSize).map((pokemon) => pokemonsAPI.getPokemon(pokemon.pokemon.url));
-    const pokemonsArr = await Promise.all(uniqPokemonsArr);
-    dispatch(fetching(false));
-    dispatch(setTotalPokemonsCount(uniqPokemonsArr.length));
-    dispatch(setPokemons(pokemonsArr));
+    const responseArray = await pokemonsAPI.getPokemonByType(currentType, page, pageSize);
+    const uniqPokemonsArr = _.uniqBy(responseArray.pokemons, (p) => p.name);
+
+    dispatch(setTotalPokemonsCount(responseArray.totalCount));// кол-во
+    dispatch(setPokemons(uniqPokemonsArr));
   } else {
     dispatch(fetching(true));
     const pokemons = await pokemonsAPI.getPokemonsFromServer(page, pageSize);
-    const { finalRes, count } = pokemons.data;
-    batch(() => {
-      dispatch(fetching(false));
-      dispatch(setPokemons(finalRes));
-      dispatch(setTotalPokemonsCount(count));
-    });
+    dispatch(fetching(false));
+    dispatch(setPokemons(pokemons.data.pokemons));
+    dispatch(setTotalPokemonsCount(pokemons.data.totalCount));
   }
 };
 
-export default pokemonsReduser;
+export default pokemonsReducer;
