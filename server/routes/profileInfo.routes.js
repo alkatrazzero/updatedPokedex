@@ -19,10 +19,9 @@ router.post(
   },
 );
 router.get(
-  '/get', auth,
+  '/', auth,
   async (req, res) => {
     try {
-      console.log(req.user.user_id);
       const profileInfo = await ProfileInfo.find({ owner: req.user.user_id });
       res.status(200).json({ profileInfo });
     } catch (e) {
