@@ -70,7 +70,7 @@ export const pokemonsAPI = {
     return response.data;
   },
   async getPokemonByName(name, page, pageSize) {
-    const response = await axios.get(`api/pokemons/name?name=${name}&currentPage=${page}&pageSize=${pageSize}`);
+    const response = await axios.get(`api/pokemons/name?name=${name}&currentPage=${page}&pageSize=${pageSize}`).catch((error) => error.response);
     return response.data;
   },
   async getPokemonByType(type, page, pageSize) {

@@ -20,6 +20,7 @@ const Body = () => {
   const dispatch = useDispatch();
   const pokemonsPage = useSelector((state) => state.pokemonsPage);
   const {
+    error,
     pageSize,
     currentType,
     currentPage,
@@ -62,16 +63,20 @@ const Body = () => {
       <div>
         <div>
           <div className="filterSettings">
-            <MemeComponent />
+            {!error && <MemeComponent />}
             <PokemonTypes getPokemonsByType={getPokemonsByType} pokemonTypes={pokemonTypes} />
-            <Search
-              className="search_field"
-              size="small"
-              placeholder="input search text"
-              onChange={onChange}
-              value={valueString}
-
-            />
+            <div>
+              <Search
+                className={error ? 'search_field error' : 'search_field'}
+                size="small"
+                placeholder="input search text"
+                onChange={onChange}
+                value={valueString}
+              />
+            </div>
+            <div className="error_message">
+              {error}
+            </div>
           </div>
           {currentPokemon ? <SearchPokemonsModal />
             : (

@@ -7,6 +7,7 @@ module.exports = async () => {
   const pokemonsFromServer = response.data.results;
   const pokemonsFromMongo = await AllPokemons.find({ pokemon: Object });
   const differenceArray = _.differenceBy(pokemonsFromServer, pokemonsFromMongo, 'name');
+  console.log(differenceArray);
   let saveToMongoPokemons = [];
   let promises = [];
   let index = 0;

@@ -4,12 +4,10 @@ const config = require('config');
 
 const app = express();
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const getAllPokemons = require('./midleware/getAllPokemons');
+const updatePokemons = require('./midleware/updatePokemons');
 
 // Без лимита слишком болшой payload при добавление покемона в любимых
-app.use(bodyParser({ limit: '50mb' }));
-app.use(express.json({ extended: true }));
+app.use(express.json());// для распознавания входящего объекта запроса как объекта JSON.
 app.use(cors({ credentials: true, origin: 'http://localhost:5000/' }));
 app.use('/api/pokemons', require('./routes/pokemons.routes'));
 app.use('/api/auth', require('./routes/auth.routes'));
@@ -29,5 +27,8 @@ async function start() {
     process.exit(1);
   }
 }
-
-start().then(() => getAllPokemons());
+const startApp = async () => {
+  await start();
+  await updatePokemons();
+};
+startApp();

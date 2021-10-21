@@ -4,6 +4,7 @@ export const LOGOUT = 'LOGOUT';
 export const SET_USER_DATA = 'SET_USER_DATA';
 export const RESET = 'RESET';
 // POKEMONS REDUCER CONSTANTS
+export const ERROR = 'ERROR';
 export const SET_RENDER = 'SET_RENDER';
 export const FETCHING = 'FETCHING';
 export const SET_POKEMONS = 'SET_POKEMONS';

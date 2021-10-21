@@ -1,7 +1,5 @@
-import _ from 'lodash';
-import { favoritePokemonsAPI, pokemonsAPI } from '../api/api';
 import {
-  DELETE_FAVORITE_POKEMON, FAVORITE_POKEMONS_IS_RENDERED, FETCHING,
+  DELETE_FAVORITE_POKEMON, ERROR, FAVORITE_POKEMONS_IS_RENDERED, FETCHING,
   SET_ALL_FAVORITE_POKEMONS, SET_CURRENT_PAGE, SET_CURRENT_POKEMON, SET_CURRENT_TYPE,
   SET_FAVORITE_POKEMON, SET_FAVORITE_POKEMON_FEED, SET_PAGE_SIZE,
   SET_POKEMONS, SET_POKEMONS_URL, SET_RENDER,
@@ -9,6 +7,7 @@ import {
 } from './constants';
 
 const initialState = {
+  error: null,
   isFavoriteRendered: false,
   isRendered: false,
   pokemons: [],
@@ -81,6 +80,8 @@ const pokemonsReducer = (state = initialState, action) => {
       return { ...state, isRendered: action.status };
     case FAVORITE_POKEMONS_IS_RENDERED:
       return { ...state, isFavoriteRendered: action.status };
+    case ERROR:
+      return { ...state, error: action.message };
     default:
       return state;
   }

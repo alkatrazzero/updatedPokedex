@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-  DELETE_FAVORITE_POKEMON, FAVORITE_POKEMONS_IS_RENDERED,
+  DELETE_FAVORITE_POKEMON, ERROR, FAVORITE_POKEMONS_IS_RENDERED,
   FETCHING, SET_ALL_FAVORITE_POKEMONS, SET_CURRENT_PAGE, SET_CURRENT_POKEMON,
   SET_CURRENT_TYPE,
   SET_FAVORITE_POKEMON, SET_FAVORITE_POKEMON_FEED,
@@ -23,6 +23,7 @@ export const setAllFavoritePokemons = (pokemons) => ({ type: SET_ALL_FAVORITE_PO
 export const setFavoritePokemonsFeed = (pokemon) => ({ type: SET_FAVORITE_POKEMON_FEED, pokemon });
 export const setRender = (status) => ({ type: SET_RENDER, status });
 export const setRenderFavorite = (status) => ({ type: FAVORITE_POKEMONS_IS_RENDERED, status });
+export const setErrorMessage = (message) => ({ type: ERROR, message });
 
 export const setPageSize = (size) => (dispatch) => {
   dispatch(currentPageSize(size));
@@ -49,6 +50,7 @@ export const getPokemonTypes = () => async (dispatch) => {
 };
 export const getCurrentPokemon = (pokemon, page, pageSize) => async (dispatch) => {
   const response = await pokemonsAPI.getPokemonByName(pokemon, page, pageSize);
+  dispatch(setErrorMessage(response.message));
   dispatch(setTotalPokemonsCount(response.totalCount));
   dispatch(setPokemons(response.pokemons));
 };

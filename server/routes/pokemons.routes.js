@@ -9,13 +9,18 @@ const mongoose = require('mongoose');
 router.post(
   '/add-favorite', auth,
   async (req, res) => {
+    console.log(req.body);
     try {
       if (req.user.user_id) {
         const favoritePokemon = new FavoritePokemon({
           pokemonId: req.body.pokemonId,
           owner: req.user.user_id,
         });
-        await favoritePokemon.save();
+        await favoritePokemon.save((err, pokemon) => {
+          if (err) {
+            console.log(err);
+          }
+        });
       } else {
         res.status(402).json({ message: 'Вы не авторизованы' });
       }
@@ -59,12 +64,11 @@ router.get('/name',
     try {
       const { name, currentPage, pageSize } = req.query;
       const offset = (currentPage - 1) * pageSize;
-      const totalCount = await AllPokemons.countDocuments({ name: new RegExp(`^${name}`, 'i') });
-      await AllPokemons.find({ name: new RegExp(`^${name}`, 'i') }, (err, pokemons) => {
-        if (err) {
-          console.log(err);
-        }
-        res.status(200).json({ pokemons, totalCount });
+      const totalCount = await AllPokemons.countDocuments({ name: RegExp(`^${name}`) });
+      await AllPokemons.find({ name: RegExp(`^${name}`) }, (err, pokemons) => {
+        if (pokemons.length === 0) {
+          res.status(404).json({ message: 'такого покемона не существует' });
+        } else res.status(200).json({ pokemons, totalCount });
       }).skip(offset).limit(parseInt(pageSize));
     } catch (e) {
       res.status(500).json({ message: 'something wrong' });
@@ -113,17 +117,8 @@ router.get(
         {
           $unwind: {
             path: '$pokemon',
-            preserveNullAndEmptyArrays:
-              true,
           }
           ,
-        },
-        {
-          $match: {
-            pokemon: {
-              $exists: true,
-            },
-          },
         },
         {
           $replaceWith: '$pokemon',
