@@ -1,4 +1,4 @@
-import { SET_USER_PROFILE_INFO } from './constants';
+import { SET_USER_PROFILE_INFO } from '../constants';
 
 const initialState = {
   profileInfo: [],

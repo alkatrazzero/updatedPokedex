@@ -7,7 +7,7 @@ import {
   SET_PAGE_SIZE, SET_POKEMONS, SET_RENDER, SET_TOTAL_COUNT,
   SET_TYPES,
 } from '../constants';
-import { favoritePokemonsAPI, pokemonsAPI } from '../../api/api';
+import { favoritePokemonsAPI, pokemonsAPI } from '../../api';
 
 export const fetching = (status) => ({ type: FETCHING, status });
 export const currentPageSize = (size) => ({ type: SET_PAGE_SIZE, size });
@@ -48,11 +48,19 @@ export const getPokemonTypes = () => async (dispatch) => {
   const response = await pokemonsAPI.getPokemonTypes();
   dispatch(setTypes(response.results));
 };
-export const getCurrentPokemon = (pokemon, page, pageSize) => async (dispatch) => {
-  const response = await pokemonsAPI.getPokemonByName(pokemon, page, pageSize);
-  dispatch(setErrorMessage(response.message));
-  dispatch(setTotalPokemonsCount(response.totalCount));
-  dispatch(setPokemons(response.pokemons));
+export const getCurrentPokemon = (page, pageSize, pokemon) => async (dispatch) => {
+  try {
+    const response = await pokemonsAPI.getPokemonsFromServer(page, pageSize, pokemon);
+    dispatch(setTotalPokemonsCount(response.totalCount));
+    dispatch(setPokemons(response.pokemons));
+    dispatch(setErrorMessage(null));
+
+    console.log(response);
+  } catch (e) {
+    dispatch(setErrorMessage('Такого покемона не существует'));
+    dispatch(setPokemons());
+  }
+  // или просто иф елс
 };
 export const getPokemons = (page, pageSize) => async (dispatch, getState) => {
   const { currentType } = getState().pokemonsPage;
@@ -66,7 +74,7 @@ export const getPokemons = (page, pageSize) => async (dispatch, getState) => {
     dispatch(fetching(true));
     const pokemons = await pokemonsAPI.getPokemonsFromServer(page, pageSize);
     dispatch(fetching(false));
-    dispatch(setPokemons(pokemons.data.pokemons));
-    dispatch(setTotalPokemonsCount(pokemons.data.totalCount));
+    dispatch(setPokemons(pokemons.pokemons));
+    dispatch(setTotalPokemonsCount(pokemons.totalCount));
   }
 };

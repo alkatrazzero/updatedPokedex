@@ -2,7 +2,7 @@ import { Button, Modal, Tag } from 'antd';
 import { HeartTwoTone } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToFavoritePokemon, removeFromFavoritePokemon, setCurrentPokemon } from '../../store/pokemonsActions/pokemonsActions';
+import { addToFavoritePokemon, removeFromFavoritePokemon, setCurrentPokemon } from '../../store/pokemons/pokemonsActions';
 import { POKEMON_CLASSNAMES } from '../../assets/types';
 
 const ModalWindow = (props) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uniqFavoritePokemonsFeed } from '../../../store/pokemonsSelector';
 import { getRandomArrayElements } from '../../../assets/rundomValueFavoritePokemonsArr';
-import { setFavoritePokemonsFeed } from '../../../store/pokemonsActions/pokemonsActions';
+import { setFavoritePokemonsFeed } from '../../../store/pokemons/pokemonsActions';
 
 const FavoritePokemonsFeed = () => {
   const dispatch = useDispatch();

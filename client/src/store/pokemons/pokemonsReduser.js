@@ -4,7 +4,7 @@ import {
   SET_FAVORITE_POKEMON, SET_FAVORITE_POKEMON_FEED, SET_PAGE_SIZE,
   SET_POKEMONS, SET_POKEMONS_URL, SET_RENDER,
   SET_TOTAL_COUNT, SET_TYPES,
-} from './constants';
+} from '../constants';
 
 const initialState = {
   error: null,

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Input, Pagination } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 import PokemonTypes from './RenderRokemonTypes/PokemonTypes';
 import { pokemonSelector } from '../store/pokemonsSelector';
 import { SearchPokemonsModal } from './RenderRokemonTypes/searchPokemons';
@@ -11,7 +12,7 @@ import {
   setCurrentPage,
   setCurrentType,
   setPageSize, setRender,
-} from '../store/pokemonsActions/pokemonsActions';
+} from '../store/pokemons/pokemonsActions';
 import AllPokemons from './RenderPokemons/AllPokemons';
 import MemeComponent from './memeComponent';
 
@@ -53,9 +54,11 @@ const Body = () => {
     dispatch(setCurrentPage(1));
     dispatch(setRender(false));
   };
+  const debouncedOnChange = useCallback(_.debounce((page, size, value) => dispatch(getCurrentPokemon(page, size, value)), 500), []);
+
   const onChange = (event) => {
     setValue(event.target.value);
-    dispatch(getCurrentPokemon(event.target.value.toLowerCase(), currentPage, pageSize));
+    debouncedOnChange(currentPage, pageSize, event.target.value.toLowerCase());
   };
 
   return (

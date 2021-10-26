@@ -59,34 +59,28 @@ router.get('/type',
       res.status(500).json({ message: 'something wrong' });
     }
   });
-router.get('/name',
+router.get('/all',
   async (req, res) => {
     try {
       const { name, currentPage, pageSize } = req.query;
       const offset = (currentPage - 1) * pageSize;
-      const totalCount = await AllPokemons.countDocuments({ name: RegExp(`^${name}`) });
-      await AllPokemons.find({ name: RegExp(`^${name}`) }, (err, pokemons) => {
-        if (pokemons.length === 0) {
-          res.status(404).json({ message: 'такого покемона не существует' });
-        } else res.status(200).json({ pokemons, totalCount });
-      }).skip(offset).limit(parseInt(pageSize));
-    } catch (e) {
-      res.status(500).json({ message: 'something wrong' });
-    }
-  });
 
-router.get('/all',
-  async (req, res) => {
-    try {
-      const { currentPage, pageSize } = req.query;
-      const offset = (currentPage - 1) * pageSize;
-      const totalCount = await AllPokemons.countDocuments({ pokemon: Object });
-      await AllPokemons.find({ pokemon: Object }, (err, pokemons) => {
-        if (err) {
-          console.log(err);
-        }
-        res.status(200).json({ pokemons, totalCount });
-      }).skip(offset).limit(parseInt(pageSize));
+      if (name) {
+        const totalCount = await AllPokemons.countDocuments({ name: RegExp(`^${name}`) });
+        await AllPokemons.find({ name: RegExp(`^${name}`) }, (err, pokemons) => {
+          if (pokemons.length === 0) {
+            res.status(404).json({ message: 'такого покемона не существует' });
+          } else res.status(200).json({ pokemons, totalCount });
+        }).skip(offset).limit(parseInt(pageSize));
+      } else {
+        const totalCount = await AllPokemons.countDocuments({ pokemon: Object });
+        await AllPokemons.find({ pokemon: Object }, (err, pokemons) => {
+          if (err) {
+            console.log(err);
+          }
+          res.status(200).json({ pokemons, totalCount });
+        }).skip(offset).limit(parseInt(pageSize));
+      }
     } catch (e) {
       res.status(500).json({ message: 'something wrong' });
     }

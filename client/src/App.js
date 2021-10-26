@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import AppLayout from './AppLayout';
-import { setUserData, setUserToken } from './store/authActions/authActions';
-import { getPokemonTypes } from './store/pokemonsActions/pokemonsActions';
+import { setUserData, setUserToken } from './store/auth/authActions';
+import { getPokemonTypes } from './store/pokemons/pokemonsActions';
 
 const App = () => {
   const dispatch = useDispatch();

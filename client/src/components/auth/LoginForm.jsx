@@ -3,9 +3,9 @@ import {
   Button, Form, Input, message, Space,
 } from 'antd';
 import { useDispatch } from 'react-redux';
-import { authAPI } from '../../api/api';
+import { authAPI } from '../../api';
 import './auth.css';
-import { setUserData, setUserToken } from '../../store/authActions/authActions';
+import { setUserData, setUserToken } from '../../store/auth/authActions';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();

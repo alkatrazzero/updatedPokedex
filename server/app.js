@@ -6,7 +6,6 @@ const app = express();
 const cors = require('cors');
 const updatePokemons = require('./midleware/updatePokemons');
 
-// Без лимита слишком болшой payload при добавление покемона в любимых
 app.use(express.json());// для распознавания входящего объекта запроса как объекта JSON.
 app.use(cors({ credentials: true, origin: 'http://localhost:5000/' }));
 app.use('/api/pokemons', require('./routes/pokemons.routes'));

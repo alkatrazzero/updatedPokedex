@@ -1,6 +1,6 @@
 import {
   LOGOUT, RESET, SET_USER_DATA, SET_USER_TOKEN,
-} from './constants';
+} from '../constants';
 
 const initialState = {
   token: null,

@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { pokemonSelector } from '../../store/pokemonsSelector';
 import AllPokemons from './AllPokemons';
-import { getAllFavoritePokemons, setRenderFavorite } from '../../store/pokemonsActions/pokemonsActions';
+import { getAllFavoritePokemons, setRenderFavorite } from '../../store/pokemons/pokemonsActions';
 
 const FavoritePokemons = () => {
   const dispatch = useDispatch();

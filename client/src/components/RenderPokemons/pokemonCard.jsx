@@ -8,7 +8,7 @@ const PokemonCard = ({ showModal, setNewTargetPokemon, pokemons }) => (
   <div>
     <div className="pokemonsContainer">
       <div className="allPokemons_row">
-        {pokemons.map((p) => (
+        {pokemons && pokemons.map((p) => (
           <div key={p.id} className="pokemonCard_container">
             <Card
               className="pokemonCard"

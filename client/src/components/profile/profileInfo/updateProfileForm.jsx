@@ -4,8 +4,8 @@ import {
 } from 'antd';
 import '../profile.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { profileInfoAPI } from '../../../api/api';
-import { setUserProfileInfo } from '../../../store/profileActions/profileActions';
+import { profileInfoAPI } from '../../../api';
+import { setUserProfileInfo } from '../../../store/profile/profileActions';
 
 export const UpdateProfileForm = ({ setEditProfile }) => {
   const dispatch = useDispatch();

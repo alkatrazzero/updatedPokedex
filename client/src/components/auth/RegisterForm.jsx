@@ -3,7 +3,7 @@ import {
   Button, Drawer, Form, Input, Space, message,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { authAPI } from '../../api/api';
+import { authAPI } from '../../api';
 
 export const RegisterForm = () => {
   // const apiCall=
